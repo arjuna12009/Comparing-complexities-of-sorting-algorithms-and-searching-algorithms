@@ -10,27 +10,16 @@ public class Project {
 	
 	static int size;
 	
-	//method checks if array is sorted.
-	public static boolean issorted(String[] arr)
-	{
-		for(int i=0; i<size-1; i++)
-		{
-			if(arr[i].compareToIgnoreCase(arr[i+1]) < 0)
-				return false;
-		}
-		return true;
-	}
-	
 	//method to swap values
-	public static void swap(String[] arr, int n1, int n2)
+	public static void swap(float[] arr, int n1, int n2)
 	{
-		String temp = arr[n1];
+		float temp = arr[n1];
 		arr[n1] = arr[n2];
 		arr[n2] = temp;
 	}
 	
 	//method to print all elements of the array.
-	public static void print(String[] arr)
+	public static void print(float[] arr)
 	{
 		
 		
@@ -41,14 +30,8 @@ public class Project {
 		}
 		
 	}
- 	
-	
-	
-	
-	
-	
-
-	int ssort(String[] arr)
+ 
+	int ssort(float[] arr)
 	// Sorts the values array using the selection sort algorithm.
 	{
 		int compare = 0;
@@ -59,7 +42,7 @@ public class Project {
 			for(int j = current +1; j <= endIndex; j++)
 			{
 				compare++;
-				if(Float.parseFloat(arr[j]) < Float.parseFloat(arr[min]))
+				if((arr[j]) < (arr[min]))
 				{
 					min = j;
 				}
@@ -68,13 +51,8 @@ public class Project {
 		}
 		return compare;
 	}
-	
-	
-	
-	
-	
-	
-	static int bubbleUp(String[] arr, int startIndex, int endIndex)
+
+	static int bubbleUp(float[] arr, int startIndex, int endIndex)
 	// Switches adjacent pairs that are out of order
 	// between values[startIndex]to values[endIndex]
 	// beginning at values[endIndex].
@@ -84,13 +62,13 @@ public class Project {
 		for (int index = endIndex; index > startIndex; index--)
 		{
 			comparisons++;
-			if (Float.parseFloat(arr[index]) < Float.parseFloat(arr[index-1]))
+			if ((arr[index]) < (arr[index-1]))
 				swap(arr, index, index - 1);
 		}
 	    return comparisons;
 	}
 
-	int bsort(String[] arr)
+	int bsort(float[] arr)
 	// Sorts the values array using the bubble sort algorithm.
 	{
 		int compare = 0;
@@ -103,11 +81,7 @@ public class Project {
 		return compare;
 	}
 	
-	
-	
-	
-	
-	static int insertElement(String[] arr, int startIndex, int endIndex)
+	static int insertElement(float[] arr, int startIndex, int endIndex)
 	// Upon completion, values[0]to values[endIndex] are sorted.
 	{
 		int comparisons = 0;
@@ -115,7 +89,7 @@ public class Project {
 		while (moreToSearch && !finished)
 		{
 			comparisons++;
-			if (Float.parseFloat(arr[current]) < Float.parseFloat(arr[current-1]))
+			if ((arr[current]) < (arr[current-1]))
 
 			{
 				swap(arr, current, current - 1);
@@ -128,7 +102,7 @@ public class Project {
 		return comparisons;
 	}
 
-	int isort(String[] arr)
+	int isort(float[] arr)
 	// Sorts the values array using the insertion sort algorithm.
 	{
 		int compare = 0;
@@ -137,25 +111,20 @@ public class Project {
 		return compare;
 	}
 	
-	
-	
-	
-	
-	
-	static int merge (String[] arr, int leftFirst, int leftLast, int rightFirst, int rightLast)
+	static int merge (float[] arr, int leftFirst, int leftLast, int rightFirst, int rightLast)
 	// Preconditions: values[leftFirst]to values[leftLast] are sorted.
 //	     values[rightFirst]to values[rightLast] are sorted.
 	//
 	// Sorts values[leftFirst]to values[rightLast] by merging the two subarrays.
 	{
 		int comparisons = 0;
-		String[] tempArray = new String [size];
+		float[] tempArray = new float[size];
 		int index = leftFirst;
 		int saveFirst = leftFirst;       // to remember where to copy back
 
 		while ((leftFirst <= leftLast) && (rightFirst <= rightLast))
 		{
-			if (Float.parseFloat(arr[leftFirst]) < Float.parseFloat(arr[rightFirst]))
+			if ((arr[leftFirst]) < (arr[rightFirst]))
 			{
 				tempArray[index] = arr[leftFirst];
 				leftFirst++;
@@ -191,7 +160,7 @@ public class Project {
 		return comparisons;
 	}
 	
-	int msort(String[] arr, int first, int last)
+	int msort(float[] arr, int first, int last)
 	// Sorts the values array using the merge sort algorithm.
 	{
 		int compare = 0;
@@ -199,20 +168,15 @@ public class Project {
 		{
 			int middle = (first + last) / 2;
 			compare += msort(arr, first, middle);
-			compare += msort(arr, middle + 1,    last);
+			compare += msort(arr, middle + 1, last);
 			compare += merge(arr, first, middle, middle + 1, last);
 		}
 		return compare;
 	}
 	
-	
-	
-	
-	
-	
-	static int split(String[] arr, int first, int last)
+	static int split(float[] arr, int first, int last)
 	{
-		String splitVal = arr[first];
+		float splitVal = arr[first];
 		int saveF = first;
 		boolean onCorrectSide;
 	  
@@ -221,7 +185,7 @@ public class Project {
 		{
 			onCorrectSide = true;
 			while (onCorrectSide)       // move first toward last
-				if (Float.parseFloat(arr[first]) > Float.parseFloat(splitVal))
+				if ((arr[first]) > (splitVal))
 					onCorrectSide = false;
 				else
 				{
@@ -231,7 +195,7 @@ public class Project {
 
 			onCorrectSide = (first <= last);
 			while (onCorrectSide)       // move last toward first
-				if (Float.parseFloat(arr[last]) <= Float.parseFloat(splitVal))
+				if ((arr[last]) <= (splitVal))
 					onCorrectSide = false;
 				else
 				{
@@ -251,7 +215,7 @@ public class Project {
 		return last;
 	}
 	
-	void qsort(String[] arr, int first, int last)
+	void qsort(float[] arr, int first, int last)
 	{
 		if (first < last)
 		{
@@ -267,17 +231,13 @@ public class Project {
 		}
 	}
 	
-	
-	
-	
-	
-	public int lsearch(String[] arr, String x)
+	public int lsearch(float[] arr, float x)
 	{
 		int compare = 0;
 		for(int i = 0; i< size-1; i++)
 		{
 			compare++;
-			if(Float.parseFloat(arr[i]) == Float.parseFloat(x))
+			if( (arr[i]) ==  (x))
 			{	
 				System.out.println("element found at index: " + i);
 				return compare;	
@@ -286,11 +246,8 @@ public class Project {
 		System.out.println("element not found");
 		return compare;
 	}
-
 	
-	
-	
-	public int bsearch(String[] arr, String x)
+	public int bsearch(float[] arr, float x)
 	{
 		int compare = 0;
 		int first = 0;
@@ -306,7 +263,7 @@ public class Project {
 				return compare;
 			}
 			
-			else if(Float.parseFloat(arr[mid]) > Float.parseFloat(x)) 
+			else if((arr[mid]) > (x)) 
 				last = mid-1;
 			else 
 				first = mid +1;
@@ -315,9 +272,7 @@ public class Project {
 		return compare;
 	}
 	
-	
-	
-	public static String[] readarray(String file)
+	public static float[] readarray(String file)
 	{
 		
 		try
@@ -331,12 +286,12 @@ public class Project {
 				
 				
 			}
-			String[] data = new String[size];
+			float[] data = new float[size];
 			
 			Scanner s2 = new Scanner(new File("emp.txt"));
 			for(int i = 0; i < size; i++)
 			{
-				data[i] = s2.nextLine();
+				data[i] = s2.nextFloat();
 			}
 			return data;
 		}
@@ -347,56 +302,21 @@ public class Project {
 		}
 	}
 	
-	public static float max(String [] arr)
+	public static float max(Float [] arr)
 	{
-		float max = Float.parseFloat(arr[0]);
-		for(int i = 0; i < arr.length; i++)
-		{
-			if(Float.parseFloat(arr[i]) > max)
-			{
-				max = Float.parseFloat(arr[i]);
-			}
-		}
-		System.out.println("max: " + max);
-		return max;
-	}
-	
-	public static String datatype(String file)
-	{
-		try
-		{
-			
-			String type = "";
-			Scanner s1 = new Scanner(new File(file));
-			while(s1.hasNextLine())
-			{
-				if(s1.hasNextInt())
-				{
-					type = "Integer";
-					System.out.println("Integer");
-				}
-					
-				else if(s1.hasNextFloat())
-				{
-					type = "Float";
-					System.out.println("float");
-				}
-					
-				else 
-				{
-					type = "String";
-					System.out.println("String");
-				}	
-			}
-			return type;
-		}
-		catch(FileNotFoundException e)
-		{
-			System.out.println("file not found");
-			return null;
-		}
 		
-	}
+			float max = (arr[0]);
+			for(int i = 0; i < arr.length; i++)
+			{
+				if((arr[i]) > max)
+				{
+					max = (arr[i]);
+				}
+			}
+			System.out.println("max: " + max);
+			return max;
+		
+	}	
 	
 	public static void main(String[] args) {
 
@@ -404,12 +324,13 @@ public class Project {
 	
 		Scanner input = new Scanner(System.in);
 		
-		String datatyp;
-		String[] arr = readarray("emp.txt");
+		int datatyp;
+		float[] arr = readarray("emp.txt");
 		
 		System.out.println("original: ");
 		print(arr);
-		System.out.println("Sorted: ");
+		System.out.println();
+		System.out.println("sorted: ");
 		original.ssort(arr);
 		print(arr);
 	}
