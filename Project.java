@@ -10,6 +10,16 @@ public class Project {
 	
 	static int size;
 	
+	public static boolean issorted(float[] arr)
+	{
+		for(int i = 0; i < size; i++)
+		{
+			if(arr[i] > arr[i+1])
+				return false;
+		}
+		return true;
+	}
+	
 	//method to swap values
 	public static void swap(float[] arr, int n1, int n2)
 	{
@@ -22,13 +32,11 @@ public class Project {
 	public static void print(float[] arr)
 	{
 		
-		
-		System.out.println("\nThe array is: ");
 		for(int index = 0; index < size; index++)
 		{
 			System.out.print(arr[index] + "  ");
 		}
-		
+		System.out.println();
 	}
  
 	int ssort(float[] arr)
@@ -90,7 +98,6 @@ public class Project {
 		{
 			comparisons++;
 			if ((arr[current]) < (arr[current-1]))
-
 			{
 				swap(arr, current, current - 1);
 				current--;
@@ -121,7 +128,6 @@ public class Project {
 		float[] tempArray = new float[size];
 		int index = leftFirst;
 		int saveFirst = leftFirst;       // to remember where to copy back
-
 		while ((leftFirst <= leftLast) && (rightFirst <= rightLast))
 		{
 			if ((arr[leftFirst]) < (arr[rightFirst]))
@@ -138,15 +144,13 @@ public class Project {
 			}
 			index++;
 		}
-
 		while (leftFirst <= leftLast)
 			// Copy remaining elements from left half.
 		{
 			tempArray[index] = arr[leftFirst];
 			leftFirst++;
 			index++;
-		}
-		
+		}		
 		while (rightFirst <= rightLast)
 			// Copy remaining elements from right half.
 		{
@@ -154,7 +158,6 @@ public class Project {
 			rightFirst++;
 			index++;
 		}
-
 		for (index = saveFirst; index <= rightLast; index++)
 			arr[index] = tempArray[index];
 		return comparisons;
@@ -174,35 +177,41 @@ public class Project {
 		return compare;
 	}
 	
-	static int split(float[] arr, int first, int last)
+	static int[] split(float[] arr, int first, int last)
 	{
 		float splitVal = arr[first];
 		int saveF = first;
 		boolean onCorrectSide;
-	  
+		int[] cl = new int[2];	  
 		first++;
 		do
 		{
 			onCorrectSide = true;
 			while (onCorrectSide)       // move first toward last
 				if ((arr[first]) > (splitVal))
+				{
 					onCorrectSide = false;
+					cl[0]++;
+				}
 				else
 				{
 					first++;
 					onCorrectSide = (first <= last);
+					cl[0]++;
 				}
-
 			onCorrectSide = (first <= last);
 			while (onCorrectSide)       // move last toward first
 				if ((arr[last]) <= (splitVal))
+				{
 					onCorrectSide = false;
+					cl[0]++;
+				}
 				else
 				{
 					last--;
 					onCorrectSide = (first <= last);
+					cl[0]++;
 				}
-
 			if (first < last)
 			{
 				swap(arr, first, last);
@@ -210,83 +219,76 @@ public class Project {
 				last--;
 			}
 		} while (first <= last);
-
 		swap(arr, saveF, last);
-		return last;
+		cl[1] = last;
+		return cl;
 	}
 	
-	void qsort(float[] arr, int first, int last)
+	int qsort(float[] arr, int first, int last)
 	{
+		int[] splitPoint = new int[2];
 		if (first < last)
 		{
-			int splitPoint;
-
 			splitPoint = split(arr, first, last);
 			// values[first]to values[splitPoint - 1] <= splitVal
 			// values[splitPoint] = splitVal
 			// values[splitPoint+1]to values[last] > splitVal
 
-			qsort(arr, first, splitPoint - 1);
-			qsort(arr, splitPoint + 1, last);
+			qsort(arr, first, splitPoint[1] - 1);
+			qsort(arr, splitPoint[1] + 1, last);			
 		}
+		return splitPoint[0];
 	}
 	
-	public int lsearch(float[] arr, float x)
+	public int[] lsearch(float[] arr, float x)
 	{
-		int compare = 0;
-		for(int i = 0; i< size-1; i++)
+		int[] ans = new int[2];	//ans[0] contains the position of element and ans[1] contains comparison count.
+		for(int i = 0; i< size; i++)
 		{
-			compare++;
+			ans[1]++;			
 			if( (arr[i]) ==  (x))
 			{	
-				System.out.println("element found at index: " + i);
-				return compare;	
+				ans[0] = i;
+				return ans;	
 			}
 		}
-		System.out.println("element not found");
-		return compare;
+		ans[0] = -1;
+		return ans;
 	}
 	
-	public int bsearch(float[] arr, float x)
+	public int[] bsearch(float[] arr, float x)
 	{
-		int compare = 0;
-		int first = 0;
-		int last = arr.length-1;
-		while(first <= last)
+		int[] ans = new int[2];//ans[0] contains the position of element and ans[1] contains comparison count.
+		float first = 0;
+		float last = size-1;		
+		while(last >= first)
 		{	
-			compare++;
-			int mid = (first+last)/2;
-			if(arr[mid] == x)
+			ans[1]++;
+			ans[0] = (int) ((first+last)/2);
+			if(arr[ans[0]] == x)
 			{	
-				
-				System.out.println("element found at :" + mid);
-				return compare;
-			}
-			
-			else if((arr[mid]) > (x)) 
-				last = mid-1;
+				return ans;
+			}			
+			else if((arr[ans[0]]) > (x)) 
+				last = ans[0]-1;
 			else 
-				first = mid +1;
-		}
-		System.out.println("element not found");
-		return compare;
+				first = ans[0] +1;
+		}		
+		ans[0] = -1;
+		return ans;
 	}
 	
 	public static float[] readarray(String file)
-	{
-		
+	{		
 		try
 		{
 			Scanner s1 = new Scanner(new File(file));
 			while(s1.hasNextLine())
-			{
-				
+			{				
 				size++;
-				s1.nextLine();
-				
-				
+				s1.nextLine();							
 			}
-			float[] data = new float[size];
+			float[] data = new float[100];
 			
 			Scanner s2 = new Scanner(new File("emp.txt"));
 			for(int i = 0; i < size; i++)
@@ -297,41 +299,190 @@ public class Project {
 		}
 		catch(FileNotFoundException e)
 		{
-			System.out.println("file nor found");
+			System.out.println("File not found");
 			return null;
 		}
 	}
 	
-	public static float max(Float [] arr)
-	{
-		
-			float max = (arr[0]);
-			for(int i = 0; i < arr.length; i++)
-			{
-				if((arr[i]) > max)
-				{
-					max = (arr[i]);
-				}
-			}
-			System.out.println("max: " + max);
-			return max;
-		
-	}	
-	
 	public static void main(String[] args) {
 
-		Project original = new Project();
-	
-		Scanner input = new Scanner(System.in);
+		Project original = new Project();	
+		boolean flag1 = true;
+		int c1, c2, c3;
+		int count1 = 0, count2 = 0;
+		Scanner input = new Scanner(System.in);	
+		System.out.println("Enter the file name: ");
 		
-		int datatyp;
-		float[] arr = readarray("emp.txt");
+		float[] arr1 = readarray(input.nextLine());
+		float[] arr3 = new float[100];
+		float[] arr2 = new float[100];
 		
-		System.out.println("original: ");
-		print(arr);
-		System.out.println();
-		System.out.println("sorted: ");
-		original.ssort(arr);
-		print(arr);
+		while(flag1 == true)
+		{
+			//Choices for the user
+			System.out.println("\n1. View List.");
+			System.out.println("2. Add an element to the list.");
+			System.out.println("3. Remove an element from the list.");
+			System.out.println("4. Choose a simple sort.");
+			System.out.println("5. Choose a O(NlogN) sort.");
+			System.out.println("6. Seacrh an element.");
+			System.out.println("7. Sorting results.");
+			System.out.println("8. Exit program.");
+			System.out.println("Enter your choice (1-8): ");
+			c1 = input.nextInt();			
+			if(c1 == 1)
+			{
+				System.out.println("List:");
+				print(arr1);				
+			}
+			else if(c1 == 2)
+			{
+				
+				System.out.println("Enter the element you wish to add to the list");
+				arr1[size] = input.nextFloat();
+				size++;				
+			}
+			else if(c1 == 3)
+			{
+				System.out.println("Enter which element you would like to remove from the original list: ");
+				float remove = input.nextFloat();
+				int[] pos = original.lsearch(arr1, remove);
+				if(pos[0] == -1)
+					System.out.println("Element not found in the list.");
+				else
+				{
+					for(int i = pos[0]; i<size; i++)
+					{
+						arr1[i] = arr1[i+1];
+					}					
+					size--;	
+				}							
+			}			
+			else if(c1 == 4)
+			{
+				boolean flag2 = true;
+				while(flag2 == true)
+				{
+					System.out.println("\n1. Selection sort.");
+					System.out.println("2. Bubble sort.");
+					System.out.println("3. Insertion sort.");
+					System.out.println("Enter your choice (1-3): ");
+					c2 = input.nextInt();
+					if(c2 == 1)
+					{						
+						for(int i = 0; i < size; i++)
+							arr2[i] = arr1[i];
+						System.out.println("\nList after selection sort:");
+						count1 = original.ssort(arr2);
+						print(arr2);
+						System.out.println("\nSelection sort no of comparison count: " + count1);
+						flag2 = false;
+					}
+					else if(c2 == 2)
+					{						
+						for(int i = 0; i < size; i++)
+							arr2[i] = arr1[i];
+						System.out.println("\nList after bubble sort:");
+						count1 = original.bsort(arr2);
+						print(arr2);
+						System.out.println("\nbubble sort no of comparison count: " + count1);
+						flag2 = false;
+					}
+					else if(c2 == 3)
+					{						
+						for(int i = 0; i < size; i++)
+							arr2[i] = arr1[i];
+						System.out.println("\nList after insertion sort:");
+						count1 = original.isort(arr2);
+						print(arr2);
+						System.out.println("\ninsertion sort no of comparison count: " + count1);
+						flag2 = false;
+					}			
+					else
+						System.out.println("Wrong choice");	
+				}				
+			}				
+			else if(c1 == 5) 
+			{
+				boolean flag3 = true;
+				while(flag3 == true)
+				{
+					System.out.println("1. Merge sort.");
+					System.out.println("2. Quick sort.");
+					System.out.println("Enter your choice (1-2): ");
+					c3 = input.nextInt();
+					if(c3 == 1)
+					{							
+						for(int i = 0; i < size; i++)
+							arr3[i] = arr1[i];
+						System.out.println("\nList after merge sort:");
+						count2 = original.msort(arr3,0,size-1);
+						print(arr3);
+						System.out.println("\nMerge sort no of comparison count: " + count2);
+						flag3 = false;
+					}
+					else if(c3 == 2)
+					{								
+						for(int i = 0; i < size; i++)
+							arr3[i] = arr1[i];
+						System.out.println("\nList after quick sort:");
+						count2 = original.qsort(arr3,0,size-1);
+						print(arr3);
+						System.out.println("\nQuick sort no of comparison count: " + count2);
+						flag3 = false;
+					}
+					else 
+						System.out.println("Wrong choice");	
+				}			
+			}			
+			else if(c1 == 6)
+			{
+				int[] l = new int[2];
+				int[] b = new int[2];
+				System.out.println("Enter a number you want to search: ");
+				input.nextLine();
+				String search = input.nextLine();
+				l = original.lsearch(arr1, Float.parseFloat(search));
+				b = original.bsearch(arr2, Float.parseFloat(search));
+				if(l[0] == -1 && b[0] == -1)
+				{
+					System.out.println("\nElement cannot be found.");
+				}
+				else
+				{
+					System.out.println();
+					print(arr1);
+					System.out.println("\nUsing linear search, element was found at position " + l[0] + " in the unsorted list");
+					System.out.println("Number of comparisons made in linear search: " + l[1]);
+					System.out.println();
+					print(arr2);
+					System.out.println("\nUsing binary search, element was found at position " + b[0] + " in the sorted list");
+					System.out.println("Number of comparisons made in binary search: " + b[1]);
+					if(l[1] < b[1])
+						System.out.println("\nlinear search has less comparisons therefore has less complexity.");
+					else
+						System.out.println("\nbinary search has less comparisons therefore has less complexity.");
+				}				
+			}
+			else if(c1 == 7)
+			{
+				if(count1 < count2)
+				{
+					System.out.println("\nSimple Sort comparison count: " + count1);
+					System.out.println("O(NlogN) Sort comparison count: " + count2);
+					System.out.println("Simple sort has less comparison count than O(NlogN) sort so complexity is lower.");
+				}
+				else if(count1 > count2)
+				{
+					System.out.println("\nSimple Sort comparison count: " + count1);
+					System.out.println("O(NlogN) Sort comparison count: " + count2);
+					System.out.println("O(NlogN) sort has less comparison count than simple sort so complexity is lower.");
+				}
+			}				
+			else if(c1 == 8)
+				flag1 = false;
+			else
+				System.out.println("Wrong choice entered.");
+		}				
 	}
 }
