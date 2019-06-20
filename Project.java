@@ -3,12 +3,13 @@ import java.util.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 
-import java.text.DecimalFormat;
+
 
 
 public class Project {
 	
 	static int size;
+	static float[] error = new float[1];
 	
 	public static boolean issorted(float[] arr)
 	{
@@ -280,6 +281,7 @@ public class Project {
 	
 	public static float[] readarray(String file)
 	{		
+		
 		try
 		{
 			Scanner s1 = new Scanner(new File(file));
@@ -290,10 +292,18 @@ public class Project {
 			}
 			float[] data = new float[100];
 			
-			Scanner s2 = new Scanner(new File("emp.txt"));
+			Scanner s2 = new Scanner(new File(file));
 			for(int i = 0; i < size; i++)
 			{
-				data[i] = s2.nextFloat();
+				try
+				{
+					data[i] = Float.parseFloat(s2.nextLine());
+				}
+				catch(NumberFormatException nfe)
+				{
+					System.out.println("Not a Float or int data type, please enter a valid file containing a float or int data type and restart the program.");
+					Runtime.getRuntime().exit(0);
+				}
 			}
 			return data;
 		}
@@ -313,9 +323,12 @@ public class Project {
 		Scanner input = new Scanner(System.in);	
 		System.out.println("Enter the file name: ");
 		
+		
 		float[] arr1 = readarray(input.nextLine());
-		float[] arr3 = new float[100];
-		float[] arr2 = new float[100];
+		
+		
+		float[] arr3 = new float[1000];
+		float[] arr2 = new float[1000];
 		
 		while(flag1 == true)
 		{
@@ -331,16 +344,16 @@ public class Project {
 			System.out.println("Enter your choice (1-8): ");
 			c1 = input.nextInt();			
 			if(c1 == 1)
-			{
+			{				
 				System.out.println("List:");
 				print(arr1);				
 			}
 			else if(c1 == 2)
 			{
 				
-				System.out.println("Enter the element you wish to add to the list");
+				System.out.println("Enter the element you wish to add to the list");	
 				arr1[size] = input.nextFloat();
-				size++;				
+				size++;	
 			}
 			else if(c1 == 3)
 			{
